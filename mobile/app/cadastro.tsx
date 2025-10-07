@@ -3,6 +3,8 @@ import { Link } from "expo-router";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+import { localhost } from "@/localhost";
+
 export default function LoginScreen() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -11,7 +13,7 @@ export default function LoginScreen() {
 
     const handleLogin = async () => {
         try {
-            const response = await fetch("http://10.22.194.252:9000/cliente/create", { // 👈 IP do backend
+            const response = await fetch(`http://${localhost}:9000/cliente/create`, { // 👈 IP do backend
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
