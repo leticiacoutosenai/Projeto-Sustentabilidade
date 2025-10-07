@@ -11,7 +11,7 @@ export default function LoginScreen() {
     const [name, setName] = useState("");
 
 
-    const handleLogin = async () => {
+    const handleCadastro = async () => {
         try {
             const response = await fetch(`http://${localhost}:9000/cliente/create`, { // 👈 IP do backend
                 method: "POST",
@@ -85,8 +85,8 @@ export default function LoginScreen() {
             />
 
             {/* Botão Login */}
-            <TouchableOpacity style={styles.button} onPress={handleLogin}>
-                <Text style={styles.buttonText}>ACESSO</Text>
+            <TouchableOpacity style={styles.button} onPress={handleCadastro}>
+                <Text style={styles.buttonText}>CADASTRO</Text>
             </TouchableOpacity>
 
             <Text style={styles.footerText}>

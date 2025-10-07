@@ -1,14 +1,46 @@
 import React, { useState } from "react";
 import { Link } from "expo-router";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from "react-native";
+import { localhost } from "@/localhost";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleLogin = () => {
     console.log("Email:", email);
-    console.log("Senha:", senha);
+    console.log("Senha:", password);
+  };
+
+  const handleCadastro = async () => {
+    try {
+      const response = await fetch(`http://${localhost}:9000/cliente/auth`, { // 👈 IP do backend
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log("Login bem-sucedido!", data);
+
+        if (data.token) {
+          await AsyncStorage.setItem("token", data.token);
+        }
+        // redirecionar, salvar token, etc.
+      } else {
+        console.log("Erro:", data.error);
+      }
+    } catch (error) {
+      console.error("Erro de conexão:", error);
+    }
   };
 
   return (
@@ -39,13 +71,13 @@ export default function LoginScreen() {
         placeholder="Digite sua senha"
         placeholderTextColor="#C9C9C9"
         secureTextEntry
-        value={senha}
-        onChangeText={setSenha}
+        value={password}
+        onChangeText={setPassword}
       />
 
       {/* Botão Login */}
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>LOGIN</Text>
+        <Text style={styles.buttonText}>ACESSAR</Text>
       </TouchableOpacity>
 
       <Text style={styles.footerText}>
@@ -123,7 +155,7 @@ const styles = StyleSheet.create({
   link: {
     textDecorationLine: "underline",
   },
-  a:{
+  a: {
     color: 'transparent'
 
   }
